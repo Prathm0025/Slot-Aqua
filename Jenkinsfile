@@ -1,7 +1,7 @@
 def PROJECT_NAME = "Slot-Aqua"
-def UNITY_VERSION = "2022.3.51f1"
+def UNITY_VERSION = "2022.3.48f1"
 def UNITY_INSTALLATION = "C:\\Program Files\\Unity\\Hub\\Editor\\${UNITY_VERSION}\\Editor\\Unity.exe"
-def REPO_URL = "git@github.com:DingDingHouse/Slot-Aqua.git"
+def REPO_URL = "git@github.com:Prathm0025/Slot-Aqua.git"
 
 pipeline {
     agent any
@@ -11,9 +11,12 @@ pipeline {
     }
 
     environment {
-        PROJECT_PATH = "C:\\Games\\Slot-Aqua"
+        bat '''
+        mkdir D:\\Games\\Slot-Aqua || echo "folder already exist"
+        '''
+        PROJECT_PATH = "D:\\Games\\Slot-Aqua"
     }
-
+ 
     stages {
         stage('Checkout') {
             steps {
@@ -21,7 +24,7 @@ pipeline {
                     dir("${PROJECT_PATH}") {
                         bat '''
                         git config --global http.postBuffer 3221225472
-                        git clone git@github.com:DingDingHouse/Slot-Aqua.git C:\\Games\\Slot-Aqua || echo "Repository already exists, pulling latest changes."
+                        git clone git@github.com:Prathm0025/Slot-Aqua.git D:\\Games\\Slot-Aqua || echo "Repository already exists, pulling latest changes."
                         cd Slot-Aqua
                         git checkout main
                         git fetch --all
