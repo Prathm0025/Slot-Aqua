@@ -1,7 +1,7 @@
 def PROJECT_NAME = "Slot-Aqua"
 def UNITY_VERSION = "2022.3.48f1"
 def UNITY_INSTALLATION = "C:\\Program Files\\Unity\\Hub\\Editor\\${UNITY_VERSION}\\Editor\\Unity.exe"
-def REPO_URL = "git@github.com:Prathm0025/Slot-Aqua.git"
+def REPO_URL = "https://github.com/Prathm0025/Slot-Aqua.git"
 
 pipeline {
     agent any
@@ -11,9 +11,6 @@ pipeline {
     }
 
     environment {
-        bat '''
-        mkdir D:\\Games\\Slot-Aqua || echo "folder already exist"
-        '''
         PROJECT_PATH = "D:\\Games\\Slot-Aqua"
     }
  
@@ -24,13 +21,14 @@ pipeline {
                     dir("${PROJECT_PATH}") {
                         bat '''
                         git config --global http.postBuffer 3221225472
-                        git clone git@github.com:Prathm0025/Slot-Aqua.git D:\\Games\\Slot-Aqua || echo "Repository already exists, pulling latest changes."
+                        git clone https://github.com/Prathm0025/Slot-Aqua.git D:\\Games\\Slot-Aqua || echo "Repository already exists, pulling latest changes."
                         cd Slot-Aqua
                         git checkout main
                         git fetch --all
                         git reset --hard origin/develop
                         git reset --hard origin/main
                         git checkout develop
+                        git rm -r -f Builds || rmdir Builds
                         '''
                     }
                 }
@@ -65,7 +63,7 @@ pipeline {
                         git checkout main
                         git checkout develop -- Builds
                         robocopy Builds\\WebGL\\ .\\ /move /e /copyall
-                        git rm -r -f Builds
+                        git rm -r -f Builds || rmdir Builds
                         git add -f Build index.html
                         git commit -m "adding new Builds" || echo "Nothing to commit"
                         git push origin main
